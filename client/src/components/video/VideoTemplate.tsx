@@ -2,21 +2,11 @@
 
 import { AnimatePresence } from 'framer-motion';
 import { useVideoPlayer } from '@/lib/video';
+import type { CatChoice } from '@/lib/cats';
 
 import { SceneTitle } from './video_scenes/SceneTitle';
 import { SceneActivity } from './video_scenes/SceneActivity';
 import { SceneAchievements } from './video_scenes/SceneAchievements';
-
-// Images
-import catCommute from '@/assets/images/cat-commute.png';
-import catBrainstorm from '@/assets/images/cat-brainstorm.png';
-import catResearch from '@/assets/images/cat-research.png';
-import catLab from '@/assets/images/cat-lab.png';
-import catGym from '@/assets/images/cat-gym.png';
-import catCommuteHome from '@/assets/images/cat-commute-home.png';
-import catCoding from '@/assets/images/cat-coding.png';
-import catReading from '@/assets/images/cat-reading.png';
-import catSleep from '@/assets/images/cat-sleep.png';
 
 const SCENE_DURATIONS = {
   title: 4000,
@@ -32,7 +22,7 @@ const SCENE_DURATIONS = {
   achievements: 6000,
 };
 
-export default function VideoTemplate() {
+export default function VideoTemplate({ selectedCat }: { selectedCat: CatChoice }) {
   const { currentSceneKey } = useVideoPlayer({
     durations: SCENE_DURATIONS,
   });
@@ -50,117 +40,126 @@ export default function VideoTemplate() {
       }}
     >
       <AnimatePresence mode="wait">
-        {currentSceneKey === 'title' && <SceneTitle key="title" />}
+        {currentSceneKey === 'title' && <SceneTitle key="title" catId={selectedCat} />}
         
         {currentSceneKey === 'commuteMorning' && (
           <SceneActivity 
             key="commuteMorning" 
-            imageSrc={catCommute}
+            catId={selectedCat}
             time="08:30 AM"
             activity="Morning Commute"
             description="Heading to campus on the train. A quick power nap before the day begins."
-            color="#FFFBEB" // amber-50
+            color="#FFFBEB"
             align="left"
+            sceneContext="commute"
           />
         )}
 
         {currentSceneKey === 'brainstorm' && (
           <SceneActivity 
             key="brainstorm" 
-            imageSrc={catBrainstorm}
+            catId={selectedCat}
             time="10:00 AM"
             activity="Brainstorming"
             description="Figuring out the architecture. Sticky notes everywhere."
-            color="#F0FDF4" // green-50
+            color="#F0FDF4"
             align="right"
+            sceneContext="brainstorm"
           />
         )}
 
         {currentSceneKey === 'research' && (
           <SceneActivity 
             key="research" 
-            imageSrc={catResearch}
+            catId={selectedCat}
             time="11:30 AM"
             activity="Deep Research"
             description="Reading papers and writing code. Do not disturb!"
-            color="#EFF6FF" // blue-50
+            color="#EFF6FF"
             align="left"
+            sceneContext="research"
           />
         )}
 
         {currentSceneKey === 'labMeeting' && (
           <SceneActivity 
             key="labMeeting" 
-            imageSrc={catLab}
+            catId={selectedCat}
             time="02:00 PM"
             activity="Lab Meeting"
             description="Presenting my findings to the group. They seem impressed (I hope)."
-            color="#FAF5FF" // fuchsia-50
+            color="#FAF5FF"
             align="right"
+            sceneContext="lab"
           />
         )}
 
         {currentSceneKey === 'gym' && (
           <SceneActivity 
             key="gym" 
-            imageSrc={catGym}
+            catId={selectedCat}
             time="05:30 PM"
             activity="Gym Time"
             description="Lifting tiny dumbbells to maintain peak feline performance."
-            color="#FEF2F2" // red-50
+            color="#FEF2F2"
             align="left"
+            sceneContext="gym"
           />
         )}
 
         {currentSceneKey === 'commuteHome' && (
           <SceneActivity 
             key="commuteHome" 
-            imageSrc={catCommuteHome}
+            catId={selectedCat}
             time="07:00 PM"
             activity="Commute Home"
             description="Watching the sunset on the train ride back. It was a good day."
-            color="#FFF7ED" // orange-50
+            color="#FFF7ED"
             align="right"
+            sceneContext="commuteHome"
           />
         )}
 
         {currentSceneKey === 'vibeCoding' && (
           <SceneActivity 
             key="vibeCoding" 
-            imageSrc={catCoding}
+            catId={selectedCat}
             time="08:30 PM"
             activity="Vibe Coding"
             description="Headphones on, RGB lights on, building cool stuff."
-            color="#F8FAFC" // slate-50
+            color="#F8FAFC"
             align="left"
+            sceneContext="coding"
           />
         )}
 
         {currentSceneKey === 'reading' && (
           <SceneActivity 
             key="reading" 
-            imageSrc={catReading}
+            catId={selectedCat}
             time="10:30 PM"
             activity="Bedtime Reading"
             description="Winding down with a good book in my cozy bed."
-            color="#FDF4FF" // fuchsia-50
+            color="#FDF4FF"
             align="right"
+            sceneContext="reading"
           />
         )}
 
         {currentSceneKey === 'sleep' && (
           <SceneActivity 
             key="sleep" 
-            imageSrc={catSleep}
+            catId={selectedCat}
             time="11:30 PM"
             activity="Zzzzz..."
             description="Dreaming of infinite treats and zero bugs."
-            color="#F1F5F9" // slate-100
+            color="#F1F5F9"
             align="left"
+            sceneContext="sleep"
           />
         )}
 
-        {currentSceneKey === 'achievements' && <SceneAchievements key="achievements" />}
+        {currentSceneKey === 'achievements' && <SceneAchievements key="achievements" catId={selectedCat} />}
 
       </AnimatePresence>
     </div>

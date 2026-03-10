@@ -1,24 +1,52 @@
 import { motion } from 'framer-motion';
-import { sceneTransitions, elementAnimations } from '@/lib/video';
+import { sceneTransitions } from '@/lib/video';
+import { CAT_DATA, type CatChoice } from '@/lib/cats';
+
+// Backgrounds
+import bgCommute from '@/assets/images/bg-commute.png';
+import bgBrainstorm from '@/assets/images/bg-brainstorm.png';
+import bgResearch from '@/assets/images/bg-research.png';
+import bgLab from '@/assets/images/bg-lab.png';
+import bgGym from '@/assets/images/bg-gym.png';
+import bgCommuteHome from '@/assets/images/bg-commute-home.png';
+import bgCoding from '@/assets/images/bg-coding.png';
+import bgReading from '@/assets/images/bg-reading.png';
+import bgSleep from '@/assets/images/bg-sleep.png';
+
+const BACKGROUNDS: Record<string, string> = {
+  commute: bgCommute,
+  brainstorm: bgBrainstorm,
+  research: bgResearch,
+  lab: bgLab,
+  gym: bgGym,
+  commuteHome: bgCommuteHome,
+  coding: bgCoding,
+  reading: bgReading,
+  sleep: bgSleep,
+};
 
 interface SceneActivityProps {
-  imageSrc: string;
+  catId: CatChoice;
   time: string;
   activity: string;
   description?: string;
   color?: string;
   align?: 'left' | 'right';
+  sceneContext: string;
 }
 
 export function SceneActivity({ 
-  imageSrc, 
+  catId, 
   time, 
   activity, 
   description,
-  color = '#F8FAFC', // slate-50
-  align = 'left' 
+  color = '#F8FAFC', 
+  align = 'left',
+  sceneContext
 }: SceneActivityProps) {
   const isLeft = align === 'left';
+  const cat = CAT_DATA[catId];
+  const bgImage = BACKGROUNDS[sceneContext] || bgCommute;
 
   return (
     <motion.div
@@ -26,97 +54,58 @@ export function SceneActivity({
       style={{ backgroundColor: color }}
       {...sceneTransitions.slideUp}
     >
-      <div style={{
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: '4vw',
-        padding: '0 6vw',
-        justifyContent: isLeft ? 'flex-start' : 'flex-end',
-      }}>
+      {/* Abstract Background Layer */}
+      <motion.div 
+        className="absolute inset-0 z-0 opacity-30"
+        initial={{ scale: 1.1 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 4 }}
+      >
+        <img src={bgImage} alt="Background" className="w-full h-full object-cover blur-sm" />
+      </motion.div>
+
+      <div className={`z-10 w-full max-w-[90vw] mx-auto px-[4vw] flex items-center gap-[4vw] ${isLeft ? '' : 'flex-row-reverse'}`}>
         
-        {/* Image Side */}
+        {/* Image Side (with Cat and Background) */}
         <motion.div 
-          style={{
-            width: '35vw',
-            display: 'flex',
-            justifyContent: 'center',
-            order: isLeft ? 0 : 1,
-          }}
+          className="w-[45vw] flex justify-center items-center"
           initial={{ opacity: 0, x: isLeft ? -50 : 50, rotate: isLeft ? -5 : 5 }}
           animate={{ opacity: 1, x: 0, rotate: 0 }}
           transition={{ duration: 0.8, type: 'spring', bounce: 0.4 }}
         >
-          <div style={{ position: 'relative' }}>
-            <div style={{
-              position: 'absolute',
-              inset: 0,
-              backgroundColor: 'white',
-              borderRadius: '2vw',
-              transform: 'rotate(3deg) scale(1.05)',
-              boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
-              opacity: 0.5,
-            }}></div>
-            <img 
-              src={imageSrc} 
-              alt={activity} 
-              style={{
-                position: 'relative',
-                width: '35vw',
-                aspectRatio: '1 / 1',
-                objectFit: 'cover',
-                borderRadius: '2vw',
-                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-                zIndex: 10,
-              }}
-            />
+          <div className="relative w-full aspect-[4/3]">
+            {/* The actual generated background context */}
+            <div className="absolute inset-0 bg-white rounded-[2vw] transform rotate-3 scale-105 shadow-xl opacity-50"></div>
+            <div className="relative w-full h-full rounded-[2vw] shadow-2xl overflow-hidden bg-slate-200">
+               <img src={bgImage} alt="Scene Context" className="absolute inset-0 w-full h-full object-cover" />
+               {/* The Cat Avatar */}
+               <motion.img 
+                 src={cat.img} 
+                 alt={cat.name}
+                 className="absolute bottom-[-10%] right-[-10%] w-[80%] h-[80%] object-contain drop-shadow-2xl"
+                 initial={{ y: 50, rotate: -10 }}
+                 animate={{ y: 0, rotate: 0 }}
+                 transition={{ delay: 0.4, type: 'spring', stiffness: 200, damping: 15 }}
+               />
+            </div>
           </div>
         </motion.div>
 
         {/* Text Side */}
-        <div style={{
-          width: '40vw',
-          display: 'flex',
-          flexDirection: 'column',
-          order: isLeft ? 1 : 0,
-        }}>
+        <div className="w-[40vw] flex flex-col bg-white/80 backdrop-blur-md p-[3vw] rounded-[2vw] shadow-xl border border-white">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <div style={{
-              display: 'inline-block',
-              padding: '0.8vh 1.5vw',
-              borderRadius: '9999px',
-              backgroundColor: '#1e293b',
-              color: 'white',
-              fontFamily: '"JetBrains Mono", monospace',
-              fontSize: 'clamp(1rem, 1.5vw, 1.5vw)',
-              fontWeight: 'bold',
-              marginBottom: '2vh',
-            }}>
+            <div className="inline-block px-[1.5vw] py-[0.5vw] rounded-full bg-slate-900 text-white font-mono font-bold mb-[1.5vw]" style={{ fontSize: 'clamp(1rem, 1.5vw, 2rem)' }}>
               {time}
             </div>
-            <h2 style={{
-              fontSize: 'clamp(2.5rem, 6vw, 6vw)',
-              fontFamily: '"Space Grotesk", sans-serif',
-              fontWeight: 'bold',
-              color: '#1e293b',
-              marginBottom: '2vh',
-              lineHeight: 1.2,
-            }}>
+            <h2 className="font-display font-bold text-slate-900 mb-[1.5vw] leading-tight" style={{ fontSize: 'clamp(2.5rem, 4.5vw, 6rem)' }}>
               {activity}
             </h2>
             {description && (
-              <p style={{
-                fontSize: 'clamp(1rem, 2.5vw, 2.5vw)',
-                color: '#475569',
-                fontFamily: '"DM Sans", sans-serif',
-                lineHeight: 1.6,
-                maxWidth: '90%',
-              }}>
+              <p className="text-slate-700 font-body leading-relaxed" style={{ fontSize: 'clamp(1.2rem, 2vw, 3rem)' }}>
                 {description}
               </p>
             )}

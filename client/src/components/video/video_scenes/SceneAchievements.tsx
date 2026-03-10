@@ -1,7 +1,13 @@
 import { motion } from 'framer-motion';
 import { sceneTransitions, containerVariants, itemVariants } from '@/lib/video';
+import { CAT_DATA, type CatChoice } from '@/lib/cats';
 
-export function SceneAchievements() {
+interface SceneAchievementsProps {
+  catId: CatChoice;
+}
+
+export function SceneAchievements({ catId }: SceneAchievementsProps) {
+  const cat = CAT_DATA[catId];
   const achievements = [
     { title: "Bug Squashed", desc: "Fixed that weird null pointer exception in the lab code" },
     { title: "Gains Achieved", desc: "Hit a new PR on the bench press" },
@@ -15,40 +21,26 @@ export function SceneAchievements() {
       style={{ backgroundColor: '#1E1B4B' }} // indigo-950
       {...sceneTransitions.scaleFade}
     >
-      <div style={{ zIndex: 10, width: '90vw', padding: '0 2vw' }}>
+      <div className="z-10 w-full max-w-[80vw] px-[2vw]">
         <motion.div 
-          style={{
-            textAlign: 'center',
-            marginBottom: '3vh',
-          }}
+          className="text-center mb-[4vw]"
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 style={{
-            fontSize: 'clamp(2.5rem, 8vw, 9vw)',
-            fontFamily: '"Space Grotesk", sans-serif',
-            fontWeight: 'bold',
-            color: 'white',
-            marginBottom: '1.5vh',
-          }}>
-            Daily Achievements
-          </h2>
-          <p style={{
-            fontSize: 'clamp(1.5rem, 3vw, 3vw)',
-            color: '#c7d2fe',
-            fontFamily: '"DM Sans", sans-serif',
-          }}>
+          <div className="flex justify-center items-center gap-[2vw] mb-[2vw]">
+             <img src={cat.img} alt={cat.name} className="w-[10vw] h-[10vw] object-contain drop-shadow-lg" />
+             <h2 className="font-display font-bold text-white" style={{ fontSize: 'clamp(3rem, 6vw, 8rem)' }}>
+               {cat.name}'s Achievements
+             </h2>
+          </div>
+          <p className="text-indigo-200 font-body" style={{ fontSize: 'clamp(1.5rem, 2.5vw, 4rem)' }}>
             Not a bad day's work for a cat!
           </p>
         </motion.div>
 
         <motion.div 
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '2vw',
-          }}
+          className="grid grid-cols-2 gap-[2vw]"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -56,49 +48,16 @@ export function SceneAchievements() {
           {achievements.map((item, idx) => (
             <motion.div 
               key={idx}
-              style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                backdropFilter: 'blur(10px)',
-                borderRadius: '1.5vw',
-                padding: '1.5vw',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-              }}
+              className="bg-white/10 backdrop-blur-md rounded-[1.5vw] p-[2vw] border border-white/20"
               variants={itemVariants}
             >
-              <div style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '1.2vw',
-              }}>
-                <div style={{
-                  fontSize: 'clamp(1.5rem, 2.5vw, 2.5vw)',
-                  backgroundColor: '#6366f1',
-                  color: 'white',
-                  width: '3vw',
-                  height: '3vw',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                  fontFamily: '"Space Grotesk", sans-serif',
-                  fontWeight: 'bold',
-                }}>
+              <div className="flex items-start gap-[1.5vw]">
+                <div className="bg-indigo-500 text-white w-[4vw] h-[4vw] rounded-full flex items-center justify-center shrink-0 font-display font-bold" style={{ fontSize: 'clamp(1.5rem, 2vw, 3rem)' }}>
                   {idx + 1}
                 </div>
                 <div>
-                  <h3 style={{
-                    fontSize: 'clamp(1.2rem, 2vw, 2vw)',
-                    fontWeight: 'bold',
-                    color: 'white',
-                    marginBottom: '0.5vh',
-                    fontFamily: '"Space Grotesk", sans-serif',
-                  }}>{item.title}</h3>
-                  <p style={{
-                    fontSize: 'clamp(0.9rem, 1.3vw, 1.3vw)',
-                    color: 'rgba(199, 210, 254, 0.8)',
-                    fontFamily: '"DM Sans", sans-serif',
-                  }}>{item.desc}</p>
+                  <h3 className="font-bold text-white mb-[0.5vw]" style={{ fontSize: 'clamp(1.5rem, 2vw, 3rem)' }}>{item.title}</h3>
+                  <p className="text-indigo-100/80 leading-snug" style={{ fontSize: 'clamp(1rem, 1.5vw, 2.5rem)' }}>{item.desc}</p>
                 </div>
               </div>
             </motion.div>
@@ -108,44 +67,13 @@ export function SceneAchievements() {
 
       {/* Decorative background elements */}
       <motion.div 
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          overflow: 'hidden',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
+        className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 2 }}
       >
-        <div style={{
-          position: 'absolute',
-          top: '-10%',
-          left: '-10%',
-          width: '40%',
-          height: '40%',
-          backgroundColor: '#6366f1',
-          borderRadius: '50%',
-          mixBlendMode: 'screen',
-          filter: 'blur(100px)',
-          opacity: 0.3,
-        }}></div>
-        <div style={{
-          position: 'absolute',
-          bottom: '-10%',
-          right: '-10%',
-          width: '40%',
-          height: '40%',
-          backgroundColor: '#ec4899',
-          borderRadius: '50%',
-          mixBlendMode: 'screen',
-          filter: 'blur(100px)',
-          opacity: 0.3,
-        }}></div>
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500 rounded-full mix-blend-screen filter blur-[100px] opacity-30"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-fuchsia-500 rounded-full mix-blend-screen filter blur-[100px] opacity-30"></div>
       </motion.div>
     </motion.div>
   );
