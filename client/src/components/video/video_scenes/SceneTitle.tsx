@@ -10,9 +10,10 @@ import bgTitle from '@/assets/images/bg-title.png';
 
 interface SceneTitleProps {
   catId: CatChoice;
+  videoUrl?: string;
 }
 
-export function SceneTitle({ catId }: SceneTitleProps) {
+export function SceneTitle({ catId, videoUrl }: SceneTitleProps) {
   const cat = CAT_DATA[catId];
   const titleText = `A Purrfect Day`.split('');
   const subtitleText = `With ${cat.name}`.split('');
@@ -39,16 +40,27 @@ export function SceneTitle({ catId }: SceneTitleProps) {
 
       {/* Content */}
       <div className="z-10 flex flex-col items-center max-w-[80vw] text-center">
-        <motion.div 
-          className="w-[18vw] h-[18vw] rounded-full overflow-visible flex items-center justify-center border-8 border-white shadow-2xl mb-[4vw]"
+        <motion.div
+          className="w-[18vw] h-[18vw] rounded-full overflow-hidden flex items-center justify-center border-8 border-white shadow-2xl mb-[4vw]"
           style={{ backgroundColor: cat.color }}
           {...elementAnimations.elasticScale}
         >
-          <img 
-            src={cat.img} 
-            alt={cat.name} 
-            className="w-[110%] h-[110%] object-contain drop-shadow-xl -rotate-6"
-          />
+          {videoUrl ? (
+            <video
+              src={videoUrl}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <img
+              src={cat.img}
+              alt={cat.name}
+              className="w-[110%] h-[110%] object-contain drop-shadow-xl -rotate-6"
+            />
+          )}
         </motion.div>
 
         <motion.h1 

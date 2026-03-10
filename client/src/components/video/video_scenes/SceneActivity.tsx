@@ -33,16 +33,18 @@ interface SceneActivityProps {
   color?: string;
   align?: 'left' | 'right';
   sceneContext: string;
+  videoUrl?: string;
 }
 
-export function SceneActivity({ 
-  catId, 
-  time, 
-  activity, 
+export function SceneActivity({
+  catId,
+  time,
+  activity,
   description,
-  color = '#F8FAFC', 
+  color = '#F8FAFC',
   align = 'left',
-  sceneContext
+  sceneContext,
+  videoUrl
 }: SceneActivityProps) {
   const isLeft = align === 'left';
   const cat = CAT_DATA[catId];
@@ -55,7 +57,7 @@ export function SceneActivity({
       {...sceneTransitions.slideUp}
     >
       {/* Abstract Background Layer */}
-      <motion.div 
+      <motion.div
         className="absolute inset-0 z-0 opacity-30"
         initial={{ scale: 1.1 }}
         animate={{ scale: 1 }}
@@ -65,9 +67,9 @@ export function SceneActivity({
       </motion.div>
 
       <div className={`z-10 w-full max-w-[90vw] mx-auto px-[4vw] flex items-center gap-[4vw] ${isLeft ? '' : 'flex-row-reverse'}`}>
-        
-        {/* Image Side (with Cat and Background) */}
-        <motion.div 
+
+        {/* Image/Video Side */}
+        <motion.div
           className="w-[45vw] flex justify-center items-center"
           initial={{ opacity: 0, x: isLeft ? -50 : 50, rotate: isLeft ? -5 : 5 }}
           animate={{ opacity: 1, x: 0, rotate: 0 }}
@@ -77,16 +79,28 @@ export function SceneActivity({
             {/* The actual generated background context */}
             <div className="absolute inset-0 bg-white rounded-[2vw] transform rotate-3 scale-105 shadow-xl opacity-50"></div>
             <div className="relative w-full h-full rounded-[2vw] shadow-2xl overflow-hidden bg-slate-200">
-               <img src={bgImage} alt="Scene Context" className="absolute inset-0 w-full h-full object-cover" />
-               {/* The Cat Avatar */}
-               <motion.img 
-                 src={cat.img} 
-                 alt={cat.name}
-                 className="absolute bottom-[-10%] right-[-10%] w-[80%] h-[80%] object-contain drop-shadow-2xl"
-                 initial={{ y: 50, rotate: -10 }}
-                 animate={{ y: 0, rotate: 0 }}
-                 transition={{ delay: 0.4, type: 'spring', stiffness: 200, damping: 15 }}
-               />
+               {videoUrl ? (
+                 <video
+                   src={videoUrl}
+                   autoPlay
+                   loop
+                   muted
+                   playsInline
+                   className="absolute inset-0 w-full h-full object-cover"
+                 />
+               ) : (
+                 <>
+                   <img src={bgImage} alt="Scene Context" className="absolute inset-0 w-full h-full object-cover" />
+                   <motion.img
+                     src={cat.img}
+                     alt={cat.name}
+                     className="absolute bottom-[-10%] right-[-10%] w-[80%] h-[80%] object-contain drop-shadow-2xl"
+                     initial={{ y: 50, rotate: -10 }}
+                     animate={{ y: 0, rotate: 0 }}
+                     transition={{ delay: 0.4, type: 'spring', stiffness: 200, damping: 15 }}
+                   />
+                 </>
+               )}
             </div>
           </div>
         </motion.div>

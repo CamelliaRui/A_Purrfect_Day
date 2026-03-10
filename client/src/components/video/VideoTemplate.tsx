@@ -3,6 +3,7 @@
 import { AnimatePresence } from 'framer-motion';
 import { useVideoPlayer } from '@/lib/video';
 import type { CatChoice } from '@/lib/cats';
+import type { GeneratedVideos } from '@/lib/videoGeneration';
 
 import { SceneTitle } from './video_scenes/SceneTitle';
 import { SceneActivity } from './video_scenes/SceneActivity';
@@ -22,7 +23,12 @@ const SCENE_DURATIONS = {
   achievements: 6000,
 };
 
-export default function VideoTemplate({ selectedCat }: { selectedCat: CatChoice }) {
+interface VideoTemplateProps {
+  selectedCat: CatChoice;
+  generatedVideos?: GeneratedVideos | null;
+}
+
+export default function VideoTemplate({ selectedCat, generatedVideos }: VideoTemplateProps) {
   const { currentSceneKey } = useVideoPlayer({
     durations: SCENE_DURATIONS,
   });
@@ -40,11 +46,11 @@ export default function VideoTemplate({ selectedCat }: { selectedCat: CatChoice 
       }}
     >
       <AnimatePresence mode="wait">
-        {currentSceneKey === 'title' && <SceneTitle key="title" catId={selectedCat} />}
-        
+        {currentSceneKey === 'title' && <SceneTitle key="title" catId={selectedCat} videoUrl={generatedVideos?.title} />}
+
         {currentSceneKey === 'commuteMorning' && (
-          <SceneActivity 
-            key="commuteMorning" 
+          <SceneActivity
+            key="commuteMorning"
             catId={selectedCat}
             time="08:30 AM"
             activity="Morning Commute"
@@ -52,12 +58,13 @@ export default function VideoTemplate({ selectedCat }: { selectedCat: CatChoice 
             color="#FFFBEB"
             align="left"
             sceneContext="commute"
+            videoUrl={generatedVideos?.commute}
           />
         )}
 
         {currentSceneKey === 'brainstorm' && (
-          <SceneActivity 
-            key="brainstorm" 
+          <SceneActivity
+            key="brainstorm"
             catId={selectedCat}
             time="10:00 AM"
             activity="Brainstorming"
@@ -65,12 +72,13 @@ export default function VideoTemplate({ selectedCat }: { selectedCat: CatChoice 
             color="#F0FDF4"
             align="right"
             sceneContext="brainstorm"
+            videoUrl={generatedVideos?.brainstorm}
           />
         )}
 
         {currentSceneKey === 'research' && (
-          <SceneActivity 
-            key="research" 
+          <SceneActivity
+            key="research"
             catId={selectedCat}
             time="11:30 AM"
             activity="Deep Research"
@@ -78,12 +86,13 @@ export default function VideoTemplate({ selectedCat }: { selectedCat: CatChoice 
             color="#EFF6FF"
             align="left"
             sceneContext="research"
+            videoUrl={generatedVideos?.research}
           />
         )}
 
         {currentSceneKey === 'labMeeting' && (
-          <SceneActivity 
-            key="labMeeting" 
+          <SceneActivity
+            key="labMeeting"
             catId={selectedCat}
             time="02:00 PM"
             activity="Lab Meeting"
@@ -91,12 +100,13 @@ export default function VideoTemplate({ selectedCat }: { selectedCat: CatChoice 
             color="#FAF5FF"
             align="right"
             sceneContext="lab"
+            videoUrl={generatedVideos?.lab}
           />
         )}
 
         {currentSceneKey === 'gym' && (
-          <SceneActivity 
-            key="gym" 
+          <SceneActivity
+            key="gym"
             catId={selectedCat}
             time="05:30 PM"
             activity="Gym Time"
@@ -104,12 +114,13 @@ export default function VideoTemplate({ selectedCat }: { selectedCat: CatChoice 
             color="#FEF2F2"
             align="left"
             sceneContext="gym"
+            videoUrl={generatedVideos?.gym}
           />
         )}
 
         {currentSceneKey === 'commuteHome' && (
-          <SceneActivity 
-            key="commuteHome" 
+          <SceneActivity
+            key="commuteHome"
             catId={selectedCat}
             time="07:00 PM"
             activity="Commute Home"
@@ -117,12 +128,13 @@ export default function VideoTemplate({ selectedCat }: { selectedCat: CatChoice 
             color="#FFF7ED"
             align="right"
             sceneContext="commuteHome"
+            videoUrl={generatedVideos?.commuteHome}
           />
         )}
 
         {currentSceneKey === 'vibeCoding' && (
-          <SceneActivity 
-            key="vibeCoding" 
+          <SceneActivity
+            key="vibeCoding"
             catId={selectedCat}
             time="08:30 PM"
             activity="Vibe Coding"
@@ -130,12 +142,13 @@ export default function VideoTemplate({ selectedCat }: { selectedCat: CatChoice 
             color="#F8FAFC"
             align="left"
             sceneContext="coding"
+            videoUrl={generatedVideos?.coding}
           />
         )}
 
         {currentSceneKey === 'reading' && (
-          <SceneActivity 
-            key="reading" 
+          <SceneActivity
+            key="reading"
             catId={selectedCat}
             time="10:30 PM"
             activity="Bedtime Reading"
@@ -143,12 +156,13 @@ export default function VideoTemplate({ selectedCat }: { selectedCat: CatChoice 
             color="#FDF4FF"
             align="right"
             sceneContext="reading"
+            videoUrl={generatedVideos?.reading}
           />
         )}
 
         {currentSceneKey === 'sleep' && (
-          <SceneActivity 
-            key="sleep" 
+          <SceneActivity
+            key="sleep"
             catId={selectedCat}
             time="11:30 PM"
             activity="Zzzzz..."
@@ -156,6 +170,7 @@ export default function VideoTemplate({ selectedCat }: { selectedCat: CatChoice 
             color="#F1F5F9"
             align="left"
             sceneContext="sleep"
+            videoUrl={generatedVideos?.sleep}
           />
         )}
 
