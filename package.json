@@ -5,10 +5,14 @@
   "license": "MIT",
   "scripts": {
     "dev:client": "vite dev --port 5000",
+    "dev:server": "tsx server/index.ts",
+    "dev": "npm run dev:server & npm run dev:client",
     "build": "vite build",
     "check": "tsc"
   },
   "dependencies": {
+    "@fal-ai/client": "^1.9.4",
+    "@google/genai": "^1.44.0",
     "@react-spring/web": "^10.0.3",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
@@ -16,6 +20,9 @@
     "@replit/vite-plugin-dev-banner": "^0.1.1",
     "@replit/vite-plugin-runtime-error-modal": "^0.0.4",
     "clsx": "^2.1.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
     "framer-motion": "^12.23.24",
     "gsap": "^3.14.2",
     "lottie-react": "^2.4.1",
@@ -27,6 +34,8 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.14",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "@types/node": "^20.19.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
@@ -34,6 +43,7 @@
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.14",
+    "tsx": "^4.21.0",
     "typescript": "5.6.3",
     "vite": "^7.1.9"
   }
